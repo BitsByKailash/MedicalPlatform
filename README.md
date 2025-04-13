@@ -40,8 +40,8 @@ cd medical-ai-consultation
 2. Install Dependencies
 ```bash
 npm install
-3. Start the Server
 ```
+3. Start the Server
 ```bash
 nodemon server.js
 ```
