@@ -1,0 +1,181 @@
+<!-- This is an EJS template for the Query Addressal Platform. It uses Bootstrap for styling and includes a dark mode toggle feature. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Query Addressal Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: var(--bs-body-bg);
+      color: var(--bs-body-color);
+    }
+    .heading {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      align-self: center;
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    }
+    .dark-mode {
+      --bs-body-bg: #121212;
+      --bs-body-color: #f8f9fa;
+      --bs-table-bg: #1e1e1e;
+      --bs-table-color: #f8f9fa;
+      --bs-table-border-color: #444;
+      
+      --bs-text-color: #a7ccf1;
+    }
+    .light-mode {
+      --bs-body-bg: #ffffff;
+      --bs-body-color: #212529;
+      --bs-table-bg: #ffffff;
+      --bs-table-color: #212529;
+      --bs-table-border-color: #dee2e6;
+
+    }
+    table {
+      background-color: var(--bs-table-bg);
+      color: var(--bs-table-color);
+    }
+    textarea.form-control {
+      background-color: var(--bs-table-bg);
+      color: var(--bs-table-color);
+      border-color: var(--bs-table-border-color);
+    }
+    textarea::placeholder {
+      color: #bbb;
+    }
+    textarea {
+      resize: none;
+    }
+  </style>
+</head>
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary position-fixed" style="width: 280px; height: 100vh; top: 0; left: 0;" id="sidebar">
+    <button class="btn btn-outline-secondary mb-3" onclick="toggleSidebar()" id="sidebarToggle">
+      <img src="./expand-sidebar.png" style="width: 100%; height: auto;">
+    </button>
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <svg class="bi pe-none me-2" width="40" height="32" aria-hidden="true"><use xlink:href="#bootstrap"></use></svg>
+        <span class="fs-4" id="sidebarTitle">Sidebar</span>
+    </a>
+    <hr id="sidebarDivider">
+    <ul class="nav nav-pills flex-column mb-auto" id="sidebarMenu">
+        <li class="nav-item">
+            <a href="#" class="nav-link active" aria-current="page">
+                <svg class="bi pe-none me-2" width="16" height="16" aria-hidden="true"><use xlink:href="#home"></use></svg>
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="#" class="nav-link link-body-emphasis">
+                Dashboard
+            </a>
+        </li>
+        
+    </ul>
+    <div class="dropdown mt-auto" id="sidebarDropdown">
+        <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+            <strong id="sidebarUser">Kailash H</strong>
+        </a>
+        <ul class="dropdown-menu text-small shadow">
+            <li><a class="dropdown-item" href="#">Appointments</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </ul>
+    </div>
+</div>
+
+<button class="btn btn-outline-secondary mb-3" onclick="toggleSidebar()" id="sidebarToggle" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Toggle Sidebar"></button>
+
+<body class="light-mode">
+  <div class="container my-5"><h2 class="Heading"><center>Doctor Query Addressal Panel</center></h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <thead class="table-primary">
+          <tr>
+            <th scope="col">User</th>
+            <th scope="col">Query</th>
+            <th scope="col">AI Response</th>
+            <th scope="col">Your Answer</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% queries.forEach(query => { %>
+            <tr>
+              <td class="userquerries"><%= query.user %></td>
+              <td><%= query.userquery %></td>
+              <td><%= query.airesponse %></td>
+              <td>
+                <textarea class="form-control DoctorSaid" rows="3" placeholder="Enter your answer here..."></textarea>
+              </td>
+              <td><button class="btn btn-success submitDoctorQueryButton">Submit</button></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function toggleMode() {
+      const body = document.body;
+      const btn = document.getElementById('modeToggle');
+      body.classList.toggle('dark-mode');
+      body.classList.toggle('light-mode');
+
+      if (body.classList.contains('dark-mode')) {
+        btn.textContent = 'Switch to Light Mode';
+      } else {
+        btn.textContent = 'Switch to Dark Mode';
+      }
+    }
+  </script>
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarTitle = document.getElementById('sidebarTitle');
+        const sidebarDivider = document.getElementById('sidebarDivider');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarDropdown = document.getElementById('sidebarDropdown');
+
+        sidebar.classList.toggle('collapsed');
+
+        if (sidebar.classList.contains('collapsed')) {
+            sidebar.style.width = '60px';
+            sidebarTitle.style.display = 'none';
+            sidebarDivider.style.display = 'none';
+            sidebarMenu.style.display = 'none';
+            sidebarDropdown.style.display = '';
+            sidebarMenu.querySelectorAll('a').forEach(link => {
+                link.querySelector('svg').style.marginRight = '0';
+                link.querySelector('span')?.classList.add('d-none');
+            });
+            sidebarDropdown.style.display = 'none';
+            sidebarToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.854 1.646a.5.5 0 0 1 0 .708L1.207 6H15.5a.5.5 0 0 1 0 1H1.207l3.647 3.646a.5.5 0 0 1-.708.708l-4.5-4.5a.5.5 0 0 1 0-.708l4.5-4.5a.5.5 0 0 1 .708 0z"/></svg>';
+        } else {
+            sidebar.style.width = '280px';
+            sidebarTitle.style.display = '';
+            sidebarDivider.style.display = '';
+            sidebarMenu.style.display = '';
+            sidebarMenu.querySelectorAll('a').forEach(link => {
+                link.querySelector('svg').style.marginRight = '0.5rem';
+                link.querySelector('span')?.classList.remove('d-none');
+            });
+            sidebarDropdown.style.display = '';
+            sidebarToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.146 1.646a.5.5 0 0 1 .708 0l4.5 4.5a.5.5 0 0 1 0 .708l-4.5 4.5a.5.5 0 0 1-.708-.708L14.793 6H0.5a.5.5 0 0 1 0-1h14.293L11.146 2.354a.5.5 0 0 1 0-.708z"/></svg>';
+        }
+    }
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./queryAddressal.js"></script>
+</body>
+</html>

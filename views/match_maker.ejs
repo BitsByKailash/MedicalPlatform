@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Doctors</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+</head>
+<body>
+  <div class="container py-5">
+    <div class="card shadow-lg border-0 rounded-4">
+      <div class="card-header bg-primary text-white">
+        <h2 class="mb-0">Doctors Currently Online</h2>
+      </div>
+      <div class="card-body p-4">
+        <% const doctors = [
+          { name: 'Dr. Aisha Sharma', specialization: 'Cardiologist', contact: '123-456-7890', image: 'https://via.placeholder.com/150/FFB6C1' },
+          { name: 'Dr. Rajesh Kumar', specialization: 'Dermatologist', contact: '987-654-3210', image: 'https://via.placeholder.com/150/87CEFA' },
+          { name: 'Dr. Meera Nair', specialization: 'Pediatrician', contact: '456-789-1234', image: '' }
+        ]; %>
+        <% if (doctors.length === 0) { %>
+          <p class="text-danger">No doctors are currently online.</p>
+        <% } else { %>
+          <div class="row">
+            <% doctors.forEach((doctor) => { %>
+              <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                  <img src="<%= doctor.image || 'https://via.placeholder.com/150' %>" class="card-img-top" alt="Doctor Image" style="height: 200px; object-fit: cover;">
+                  <div class="card-body">
+                    <h5 class="card-title"><%= doctor.name %></h5>
+                    <p class="card-text text-secondary">Specialization: <%= doctor.specialization %></p>
+                    <p class="card-text text-success">Status: Online</p>
+                    <p class="card-text"><strong>Contact:</strong> <a href="tel:<%= doctor.contact %>"><%= doctor.contact %></a></p>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

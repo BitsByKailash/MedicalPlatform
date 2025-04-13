@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Medical Response</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Fifth navbar example">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Get Well Soon</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+    
+          <div class="collapse navbar-collapse" id="navbarsExample05">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Describe</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item " href="#">Track</a></li>
+                  <li><a class="dropdown-item" href="#">Consult</a></li>
+                </ul>
+              </li>
+            </ul>
+            <form role="search">
+              <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+            </form>
+          </div>
+        </div>
+      </nav>
+  <div class="container py-5">
+    <div class="card shadow-lg border-0 rounded-4">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">AI-Generated Medical Response</h4>
+      </div>
+      <div class="card-body p-4">
+        <div class="mb-3">
+          <h5 class="text-secondary">Your Query:</h5>
+          <p class="form-control bg-light"><%= userAsked %></p>
+        </div>
+
+        <div class="mb-3">
+          <h5 class="text-secondary">AI Response:</h5>
+          <p class="form-control bg-light"><%- formattedResponse %></p>
+        </div>
+
+        <p class="text-muted medium"> ⚠ Disclaimer: This is an AI-generated response and has not been verified by medical professionals. Please consult a healthcare provider for accurate medical advice.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
