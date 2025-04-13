@@ -205,23 +205,23 @@
                     <br>
             
                     <div class="doctor-header text-center">
-                        <img src="https://picsum.photos/200/300.jpg" alt="Kailash H." class="doctor-image" style="margin-right: 1rem;">
+                        <img src="https://picsum.photos/200/300.jpg" alt="<%= doctor.doctorname %>" class="doctor-image" style="margin-right: 1rem;">
             
                         <!-- Flexbox container just for centering the name -->
                         <div style="display: flex; justify-content: center;">
-                            <h2>Kailash H.</h2>
+                            <h2><%= doctor.doctorname %></h2>
                         </div>
                     </div>
             
                     <form class="text-center">
-                        <p>Specialty: Pediatrician</p>
-                        <p>Phone No: +9988776655</p>
-                        <p>Email ID: doctor@example.com</p>
+                        <p>Specialty: General Physician</p>
+                        <p>Phone No: <%= doctor.doctorphone %></p>
+                        <p>Email ID: <%= doctor.doctoremail %></p>
                         <p>Status: <input type="checkbox" checked /> Online</p>
                     </form>
             
                     <div class="btn-group-custom text-center">
-                        <button class="btn btn-dark btn-lg">Logout</button>
+                        <button class="btn btn-dark btn-lg" id="logoutButton">Logout</button>
                         <button class="btn btn-dark btn-lg">Edit</button>
                     </div>
                 </div>

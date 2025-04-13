@@ -59,3 +59,21 @@ document.addEventListener("DOMContentLoaded", () => {
         //console.log("Attached event listener");
     }
 });
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById('logoutButton')?.addEventListener('click', async () => {
+        try {
+            const response = await fetch('/logout', { method: 'POST' });
+            if (response.ok) {
+                //res.session.destroy();                    
+                console.log('Logged out successfully');
+                window.location.href = '/';
+            } else {
+                console.error('Failed to logout');
+                alert('An error occurred while logging out.');
+            }
+        } catch (error) {
+            console.error('Logout error:', error);
+            alert('An unexpected error occurred. Please try again.');
+        }
+    });
+});

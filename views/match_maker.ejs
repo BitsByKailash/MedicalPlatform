@@ -13,24 +13,20 @@
         <h2 class="mb-0">Doctors Currently Online</h2>
       </div>
       <div class="card-body p-4">
-        <% const doctors = [
-          { name: 'Dr. Aisha Sharma', specialization: 'Cardiologist', contact: '123-456-7890', image: 'https://via.placeholder.com/150/FFB6C1' },
-          { name: 'Dr. Rajesh Kumar', specialization: 'Dermatologist', contact: '987-654-3210', image: 'https://via.placeholder.com/150/87CEFA' },
-          { name: 'Dr. Meera Nair', specialization: 'Pediatrician', contact: '456-789-1234', image: '' }
-        ]; %>
-        <% if (doctors.length === 0) { %>
+        <p class="lead">Find the best doctors available for consultation.</p>
+        <% if (doctor.length === 0) { %>
           <p class="text-danger">No doctors are currently online.</p>
         <% } else { %>
           <div class="row">
-            <% doctors.forEach((doctor) => { %>
+            <% doctor.forEach((doctor) => { %>
               <div class="col-md-4 mb-4">
                 <div class="card shadow-sm">
-                  <img src="<%= doctor.image || 'https://via.placeholder.com/150' %>" class="card-img-top" alt="Doctor Image" style="height: 200px; object-fit: cover;">
+                  <img src="<%= doctor.image || './doctor_placeholder..png' %>" class="card-img-top" alt="Doctor Image" style="height: 200px; object-fit: cover;">
                   <div class="card-body">
-                    <h5 class="card-title"><%= doctor.name %></h5>
-                    <p class="card-text text-secondary">Specialization: <%= doctor.specialization %></p>
+                    <h5 class="card-title"><%= doctor.doctorname %></h5>
+                    <p class="card-text text-secondary">Specialization: Gneral Physician</p>
                     <p class="card-text text-success">Status: Online</p>
-                    <p class="card-text"><strong>Contact:</strong> <a href="tel:<%= doctor.contact %>"><%= doctor.contact %></a></p>
+                    <p class="card-text"><strong>Contact:</strong> <a href="tel:<%= doctor.doctorphone %>"><%= doctor.doctorphone %></a></p>
                   </div>
                 </div>
               </div>

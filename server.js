@@ -9,10 +9,9 @@ import OpenAI from "openai";
 import  dotenv  from "dotenv";
 import session from "express-session";
 import { get } from "http";
+import { GoogleGenAI } from "@google/genai";
 
-dotenv.config();
-console.log(process.env.OPENAI_API_KEY);
-const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY,});
+const ai = new GoogleGenAI({ apiKey: "AIzaSyCSfjPt0-ocyYJJGwUs8Daz0wr71JUjRAM" });
 const { Pool } = pg;
 const port = 3000;
 const pool = new Pool ({
@@ -28,8 +27,6 @@ pool.connect().then(() => console.log('Connected to the database'))
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
-const API_URL = "https://api-inference.huggingface.co/models/google/gemma-3-27b-it";
-const API_KEY = "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";
 app.use(
     session({
       secret: "HareKrishnaHareKrishna123!",          
@@ -50,30 +47,19 @@ app.use(express.static(path.join(__dirname,"views")));
 
 async function getResponseFor (userQuery)
 {
-    if (!userQuery) {
-            throw new Error("Invalid user querry. Please provide a valid string.");
-        }
-    try {
-        //console.log({ inputs: userQuery });
-        //const response = await axios.post(API_URL, { inputs: userQuery }, { headers: {Authorization: `Bearer ${API_KEY}`, 'Content-Type': 'application/json',},});
-        const completion = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
-            messages: [{ role: "user", content:userQuery}],
-        });
-        const result = completion.choices[0].message.content;
-        if (Array.isArray(result) && result[0].generated_text)
-        {
-            return result[0].generated_text
-        }
-        else 
-        {
-            throw new Error("Unexpected API response format.");
-        }
-    } catch (error)
-    {
-        console.error(`Error fetching api response: ${error.message}`);
-        return(`Error: ${error.message}`);
-    }
+    
+    const response = await ai.models.generateContent({
+    model: "gemini-2.0-flash",
+    contents: `${userQuery}`,
+  });
+  console.log(response.text);
+  return response.text;
+    // const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // const result = await model.generateContent([userQuery]);
+    // const response  = result.response;
+    // const text = response.text();
+    // console.log(text);
+    // return text;
     
 }
 
@@ -100,7 +86,9 @@ app.get("/status_Tracker", async (req,res) => {
 //     res.render("statusTracker");
 // });
 app.get("/appointment_maker", async (req,res) => {
-    res.render("match_maker");
+    const doctorsOnline = await pool.query("SELECT doctorid, doctorname, doctoremail, doctorphone, doctor_status FROM doctors WHERE doctor_status = true");
+    console.log(doctorsOnline.rows);
+    res.render("match_maker",{doctor: doctorsOnline.rows});
 });
 app.get("/symptom_describer", async (req,res) => {
     res.render("symptom_describer");
@@ -158,9 +146,12 @@ app.get("/doctor_dashboard", async (req,res) => {
     if(!req.session.userId) {
         return res.status(401).send("Unauthorized access. Please log in.");   
     }
-    const doctorId = req.session.email;
+    const doctorId = req.session.userId;
     const response = await pool.query("UPDATE doctors set doctor_status = true WHERE doctorid = $1", [doctorId]);
-    res.render('doctor_dashboard');
+    const doctorCredentials = await pool.query("SELECT doctorid, doctorname, doctoremail, doctorphone FROM doctors WHERE doctorid = $1", [doctorId]);
+    console.log(doctorCredentials.rows[0]);
+    const doctor = (doctorCredentials.rows[0]);
+    res.render('doctor_dashboard',{ doctor });
 });
 app.get("/responseWindow", (req,res) => {
     const { userAsked, aiResponse } = req.query;
@@ -199,6 +190,22 @@ app.get("/doctorLogout", (req,res) => {
         res.redirect("/doctorLogin");
     });
 });
+app.post('/logout', (req, res) => {
+    const response = pool.query("UPDATE doctors SET doctor_status = false WHERE doctorid = $1", [req.session.userId]);
+      if (response) {
+        console.log("Doctor status updated to offline.");
+      } else {
+        console.error("Error updating doctor status.");
+      }
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error during logout' });
+      }
+      res.clearCookie('connect.sid');
+      res.status(200).json({ message: 'Logout successful' });
+      // res.redirect('/');
+    });
+  });
 app.get("/", async (req,res) => {
     res.render("role");
 });
