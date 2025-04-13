@@ -10,8 +10,9 @@ import  dotenv  from "dotenv";
 import session from "express-session";
 import { get } from "http";
 import { GoogleGenAI } from "@google/genai";
+dotenv.config();
 
-const ai = new GoogleGenAI({ apiKey: "AIzaSyCSfjPt0-ocyYJJGwUs8Daz0wr71JUjRAM" });
+const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
 const { Pool } = pg;
 const port = 3000;
 const pool = new Pool ({
