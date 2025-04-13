@@ -1,8 +1,3 @@
-Sure! Here's a polished README.md for your medical website project:
-
-markdown
-Copy
-Edit
 # 🏥 Medical AI-Verified Consultation Website
 
 This is a full-stack web application that allows patients to:
@@ -41,29 +36,23 @@ This is a full-stack web application that allows patients to:
 ```bash
 git clone https://github.com/your-username/medical-ai-consultation.git
 cd medical-ai-consultation
+```
 2. Install Dependencies
-bash
-Copy
-Edit
+```bash
 npm install
 3. Start the Server
-bash
-Copy
-Edit
-node server.js
+```
+```bash
+nodemon server.js
+```
 You should see:
-
-bash
-Copy
-Edit
+```bash
 Server running on http://localhost:3000
+```
 4. Open in Your Browser
 Visit: http://localhost:3000
 
-📁 Project Structure
-pgsql
-Copy
-Edit
+``` 📁 Project Structure
 medical-ai-consultation/
 ├── public/
 │   ├── index.html          # Patient interface
@@ -73,6 +62,7 @@ medical-ai-consultation/
 ├── server.js               # Express backend server
 ├── package.json
 └── README.md
+```
 ⚠️ Known Limitations
 ❌ No persistent database — all data resets on server restart.
 
