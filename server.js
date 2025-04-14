@@ -70,7 +70,7 @@ async function getQuerriesOf (patientId)
     return(result.rows);
 }
 async function getQueries () {
-    const result = await pool.query("SELECT userquery, airesponse FROM patient_queries WHERE doctorverified = false");
+    const result = await pool.query("SELECT userquery, airesponse FROM patient_queries WHERE doctorverified = false OR doctorverified IS NULL");
     console.log(result);
     return(result);
 }

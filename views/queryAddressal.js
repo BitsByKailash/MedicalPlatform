@@ -54,4 +54,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 }
 });
- 
+document.addEventListener("DOMContentLoaded", () => {
+    const dashboardButton = document.getElementById("dashboardButton");
+    dashboardButton.addEventListener("click", () => {
+        window.location.href = "/doctor_dashboard";
+    });
+});
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutButton = document.getElementById("logoutButton");
+    logoutButton.addEventListener("click", () => {
+        fetch("/logout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then((response) => {
+            if (response.ok) {
+                window.location.href = "/"; // Redirect to login page
+            } else {
+                alert("Failed to log out. Please try again.");
+            }
+        })
+        .catch((error) => {
+            console.error("Logout error:", error);
+            alert("An error occurred while logging out. Please try again.");
+        });
+    });
+});
