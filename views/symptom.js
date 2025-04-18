@@ -81,7 +81,13 @@ document.addEventListener('DOMContentLoaded', function () {
           //console.log("Attached event listener");
       }
   });
-  for (let index = 0; index < 9; index++) {
-    const element = document.getElementById(`sympt`);
-    
+  for (let index = 0; index < 9; index++) 
+    {
+    const element = document.getElementById(`sympt${index}`);
+    document.addEventListener("DOMContentLoaded", () => {
+      const addSymptom = () => {
+        document.getElementById("voiceTextarea").value = document.getElementById(`symptomText${index}`).innerText;
+      };
+      element.addEventListener("click",addSymptom);
+    });    
   }

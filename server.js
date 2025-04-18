@@ -124,7 +124,7 @@ app.post("/api/login", async (req, res) => {
       const result = await pool.query("SELECT doctorid, doctorname, doctoremail, password FROM doctors WHERE doctoremail = $1",[email]);
       console.log (result.rows);  
       if (result.rows.length === 0 || result.rows[0].password !== password) {
-        return res.status(401).json({ message: "Invalid credentials." });
+        return res.status(401).json({ message: "F*ck You" });
       }
   
       // Set user session
