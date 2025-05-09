@@ -83,6 +83,7 @@ app.get("/doctorLogin", async (req,res) => {
 app.get("/status_Tracker", async (req,res) => {
     res.render("statusTracker");
 });
+
 // app.get("/status_Tracker", async (req,res) => {
 //     res.render("statusTracker");
 // });
@@ -153,6 +154,13 @@ app.get("/doctor_dashboard", async (req,res) => {
     console.log(doctorCredentials.rows[0]);
     const doctor = (doctorCredentials.rows[0]);
     res.render('doctor_dashboard',{ doctor });
+});
+app.get("/appointmentApprovalPage", async (req,res) => {
+    const doctorId = req.session.userId;
+    console.log("Doctor ID:", doctorId);
+    const appointments = await pool.query("SELECT patientname, phoneno, appointment_date, appointment_time FROM appointments WHERE doctorid = $1", [doctorId]);
+    console.log(appointments.rows);
+    res.render("approveAppointments",{appointmentList: appointments.rows});
 });
 app.get("/responseWindow", (req,res) => {
     const { userAsked, aiResponse } = req.query;
@@ -241,12 +249,9 @@ app.post('/bookAppointment', async (req, res) => {
   }
 }
 );
-
 app.get("/", async (req,res) => {
     res.render("role");
 });
-
-
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
   });
