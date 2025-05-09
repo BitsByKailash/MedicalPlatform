@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Appointment Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <!-- Optional Flatpickr Theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    label {
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px 14px;
+      margin: 10px 0 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    input:focus {
+      border-color: #74ebd5;
+      outline: none;
+      box-shadow: 0 0 5px #74ebd5;
+    }
+
+    button {
+      background-color: #74ebd5;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #56c6c1;
+    }
+
+    .flatpickr-calendar {
+      font-size: 1.1rem !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Book an Appointment</h2>
+    <form id="appointmentForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}" placeholder="1234567890" />
+
+      <label for="date">Select Date</label>
+      <input type="text" id="date" name="date" placeholder="Pick a date" required />
+
+      <label for="time">Select Time</label>
+      <input type="text" id="time" name="time" placeholder="Pick a time" required />
+
+      <button type="submit">Confirm Appointment</button>
+    </form>
+  </div>
+
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <script>
+    // Initialize date picker
+    flatpickr("#date", {
+      dateFormat: "Y-m-d",
+      altInput: true,
+      altFormat: "F j, Y"
+    });
+
+    // Initialize time picker
+    flatpickr("#time", {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i",
+      time_24hr: false,
+      altInput: true,
+      altFormat: "h:i K"
+    });
+
+    // Handle form submission
+    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+
+      alert(`Appointment booked!\n\nName: ${name}\nPhone: ${phone}\nDate: ${date}\nTime: ${time}`);
+    });
+  </script>
+  <script src="./appointment_maker.js"></script>
+</body>
+</html>

@@ -207,9 +207,45 @@ app.post('/logout', (req, res) => {
       // res.redirect('/');
     });
   });
+
+const doctorID = 1; // Replace with the actual doctor ID you want to fetch appointments for
+app.get("/getAppt", (req,res) => {
+    console.log("Appointment page loaded.");
+    const doctorID = req.query.doctorId;
+    console.log("Doctor ID:", doctorID); 
+    res.render("appointment_maker");
+});
+app.post('/bookAppointment', async (req, res) => {
+  console.log(req.body);
+  const patientname = req.body.name;
+  const phoneno = req.body.phone;
+  const appointmentDate = req.body.date;
+  const appointmentTime = req.body.time;
+  console.log("Doctor ID:", doctorID);
+  console.log("Patient Name:", patientname);
+  console.log("Phone Number:", phoneno);
+  console.log("Appointment Date:", appointmentDate);
+  console.log("Appointment Time:", appointmentTime);
+
+  if (!doctorID || !patientname || !phoneno || !appointmentDate || !appointmentTime) {
+    return res.status(400).json({ error: "All fields are required." });
+  }
+
+  try {
+    await pool.query('INSERT INTO appointments (doctorid, patientname, phoneno, appointment_date, appointment_time) VALUES ($1, $2, $3, $4, $5)', [doctorID, patientname, phoneno, appointmentDate, appointmentTime]);
+    console.log("Appointment scheduled successfully.");
+    res.status(200).json({ message: "Appointment scheduled successfully." });
+  } catch (error) {
+    console.error('Error booking appointment:', error.message);
+    res.status(500).json({ error: "Failed to schedule appointment." });
+  }
+}
+);
+
 app.get("/", async (req,res) => {
     res.render("role");
 });
+
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
