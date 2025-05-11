@@ -16,7 +16,7 @@ This is a full-stack web application that allows patients to:
 - 🤖 AI-generated initial response to user queries.
 - 👨‍⚕️ Doctors can view pending queries and verify or update AI responses.
 - 👥 Patients can book appointments with doctors.
-- 🔄 Refresh-based updates for responses and statuses.
+- 🔄 Refresh-based updates for responses and statuses.(yet to implement)
 
 ---
 
@@ -24,8 +24,8 @@ This is a full-stack web application that allows patients to:
 
 - **Frontend:** HTML, CSS, JavaScript (Vanilla)
 - **Backend:** Node.js, Express
-- **AI Response:** Placeholder function (replaceable with real model or API)
-- **Templating/Views:** Static HTML + dynamic rendering logic (optional)
+- **AI Response:** Google Gemini's Free to use API
+- **Templating/Views:** Static HTML
 
 ---
 
