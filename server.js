@@ -158,7 +158,7 @@ app.get("/doctor_dashboard", async (req,res) => {
 app.get("/appointmentApprovalPage", async (req,res) => {
     const doctorId = req.session.userId;
     console.log("Doctor ID:", doctorId);
-    const appointments = await pool.query("SELECT patientname, phoneno, appointment_date, appointment_time FROM appointments WHERE doctorid = $1", [doctorId]);
+    const appointments = await pool.query('SELECT "appointmentId", status, patientname, phoneno, appointment_date, appointment_time FROM appointments WHERE doctorid = $1', [doctorId]);
     console.log(appointments.rows);
     res.render("approveAppointments",{appointmentList: appointments.rows});
 });
@@ -199,6 +199,20 @@ app.get("/doctorLogout", (req,res) => {
         res.redirect("/doctorLogin");
     });
 });
+app.post('/appointments/update', (req, res) => {
+  const { appointment_id, action } = req.body;
+  
+  if (action === 'approve') {
+    // Update DB to set status = 'approved'
+    pool.query('UPDATE appointments SET status = true WHERE "appointmentId" = $1', [appointment_id]);
+  } else if (action === 'reject') {
+    // Update DB to set status = 'rejected'
+    pool.query('UPDATE appointments SET status = false WHERE "appointmentId" = $1', [appointment_id]);
+  }
+
+  res.redirect('/appointmentApprovalPage'); // Redirect back to the page
+});
+
 app.post('/logout', (req, res) => {
     const response = pool.query("UPDATE doctors SET doctor_status = false WHERE doctorid = $1", [req.session.userId]);
       if (response) {
