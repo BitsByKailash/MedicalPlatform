@@ -16,11 +16,11 @@ const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
 const { Pool } = pg;
 const port = 3000;
 const pool = new Pool ({
-    user: "postgres",
-    host: "localhost",
-    database: "MedPlatform",
-    password: "HareKrishnaHareKrishna123!",
-    port: 5432
+    user: process.env.DB_USER_NAME,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT
     });
 pool.connect().then(() => console.log('Connected to the database'))
 .catch((err)=> console.error("Error in connecting to the database :",err));
