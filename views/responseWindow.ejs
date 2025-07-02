@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -56,6 +56,131 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Medical Response</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #1f1f2e, #0c0c1b);
+      color: #f1f1f1;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .navbar {
+      background: #0d0d0d !important;
+    }
+
+    .card-header h4 {
+      font-weight: 600;
+    }
+
+    .form-control-static {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #f8f9fa;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    .text-muted {
+      font-size: 0.9rem;
+    }
+
+    .container {
+      max-width: 900px;
+    }
+    .flash-icon {
+  animation: flash 1s infinite alternate;
+}
+
+@keyframes flash {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.5; transform: scale(1.1); }
+}
+
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold text-primary" href="#">🩺 Get Well Soon</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTech" aria-controls="navbarTech" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarTech">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="/patient_dashboard">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/symptom_describer">Describe</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">More</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Track</a></li>
+              <li><a class="dropdown-item" href="#">Consult</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <div class="container py-5">
+    <div class="glass-card">
+      <div class="mb-4">
+        <h4 class="text-info">🤖 AI-Generated Medical Response</h4>
+      </div>
+
+      <div class="mb-4">
+        <h5 class="text-warning">📝 Your Query:</h5>
+        <div class="form-control-static"><%= userAsked %></div>
+      </div>
+
+      <div class="mb-4">
+        <h5 class="text-success">💡 AI Response:</h5>
+        <div class="form-control-static"><%- formattedResponse %></div>
+      </div>
+      <div class="alert alert-warning border-3 border-warning p-4 rounded-4 shadow-sm mt-4 d-flex align-items-center" style="background-color: #fff3cd; font-weight: 600; font-size: 1rem;">
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#ffc107" class="bi bi-exclamation-triangle-fill me-3 flash-icon" viewBox="0 0 16 16">
+    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.964 0L.165 13.233c-.457.778.091 1.767.982 1.767h13.707c.89 0 1.438-.99.982-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+  </svg>
+  ⚠ This is an <strong>AI-generated response</strong>. It may be inaccurate or unverified. <u>Please consult a licensed healthcare professional</u> before taking any medical action.
+</div>
+  <div>
+    <div class="alert alert-info mt-4 rounded-4 shadow-sm">
+      <strong>Track your query:</strong><br>
+      <span class="fw-bold">Query Key:</span>
+      <span class="badge bg-primary fs-6"><%- cryptoKey %></span>
+      <div class="mt-2 text-muted" style="font-size: 0.95rem;">
+        Save this key to check for a doctor's response to your query later.
+      </div>
+    </div>
+  </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

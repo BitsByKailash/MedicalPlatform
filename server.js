@@ -10,6 +10,7 @@ import  dotenv  from "dotenv";
 import session from "express-session";
 import { get } from "http";
 import { GoogleGenAI } from "@google/genai";
+import crypto from "crypto";
 dotenv.config();
 
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
@@ -20,7 +21,10 @@ console.log({
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT
+  port: process.env.DB_PORT,
+  ssl:{
+    rejectUnauthorized: false
+  }
 });
 
 const pool = new Pool ({
@@ -59,7 +63,7 @@ async function getResponseFor (userQuery)
     
     const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
-    contents: `${userQuery}`,
+    contents: `${userQuery}.Answer in as much detail as possible. If you need more information do not ask, give all possibilities.`,
   });
   console.log(response.text);
   return response.text;
@@ -82,26 +86,145 @@ async function getQueries () {
     console.log(result);
     return(result);
 }
+app.get("/patientLogin", async (req,res) => {
+    res.render("patient_login");
+});
 app.get("/patient_dashboard", async (req,res) => {
     res.render("patirnt_Dashboard");
 });
 app.get("/doctorLogin", async (req,res) => {
     res.render("doctor_login");
 });
-app.get("/status_Tracker", async (req,res) => {
-    res.render("statusTracker");
+app.get("/status_Tracker", async (req, res) => {
+  const queryKey = req.query.queryKey;
+
+  // If no query key, just show the form with empty data
+  if (!queryKey) {
+    return res.render('statusTracker', {
+      query: null,
+      queryNotFound: false
+    });
+  }
+
+  try {
+    const result = await pool.query("SELECT * FROM questions WHERE unique_key = $1", [queryKey]);
+
+    if (result.rows.length > 0) {
+      res.render('statusTracker', {
+        query: result.rows[0],
+        queryNotFound: false
+      });
+    } else {
+      res.render('statusTracker', {
+        query: null,
+        queryNotFound: true
+      });
+    }
+  } catch (err) {
+    console.error("DB error:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+app.get("/viewQuery", async (req,res) => {
+    const queryKey = req.query.queryKey;
+    console.log("Query Key:", queryKey);
+    if (!queryKey) {
+        return res.status(400).send("Query key is required.");
+    }
+    try {
+        const result = await pool.query("SELECT * FROM patient_queries WHERE uqid = $1", [queryKey]);
+        if (result.rows.length > 0) {
+            res.render('statusTracker', { query: result.rows[0], queryNotFound: false });
+        } else {
+            res.render('statusTracker', { query: null, queryNotFound: true });
+        }
+    } catch (err) {
+        console.error("DB error:", err);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
+app.post("/patientLogin", async(req,res) => {
+    const { email, password } = req.body;
+    console.log(`Email : ${email}, Password: ${password}`);
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password required." });
+    }
+    try {
+      const result = await pool.query("SELECT patientid, patientname, patientemail, password FROM patients WHERE patientemail = $1",[email]);
+      console.log (result.rows);  
+      if (result.rows.length === 0 || result.rows[0].password !== password) {
+        return res.status(401).json({ message: "Not Registered" });
+      }
+  
+      // Set user session
+      req.session.patientId = result.rows[0].patientid;
+      req.session.save((err) => {
+        if (err) {
+          console.error("Session save error:", err);
+          return res.status(500).json({ message: "Failed to save session." });
+        }
+        console.log("User session saved:", req.session.userId);
+        return res.json({ message: "Login successful" });
+      });
+      
+    } catch (err) {
+      console.error("Login error:", err);
+      return res.status(500).json({ message: "Internal server error." });
+    }
+});
 // app.get("/status_Tracker", async (req,res) => {
 //     res.render("statusTracker");
 // });
+app.get("/providePrescriptionPage", async (req,res) => {
+    if(!req.session.userId) {
+        return res.status(401).send("Unauthorized access. Please log in.");
+    }
+    const doctorId = req.session.userId;
+    const doctorCredentials = await pool.query("SELECT doctorid, doctorname, doctoremail, doctorphone FROM doctors WHERE doctorid = $1", [doctorId]);
+    const appointments = await pool.query(
+      'SELECT appointmentid, status, patientname, phoneno, appointment_date, appointment_time FROM appointments WHERE doctorid = $1',
+      [doctorId]
+    );
+    console.log(doctorCredentials.rows[0]);
+    const doctor = (doctorCredentials.rows[0]);
+    res.render('prescription',{ doctor, appointments: appointments.rows });
+});
 app.get("/appointment_maker", async (req,res) => {
+    if(!req.session.patientId) {
+        return res.redirect("/patientLogin");
+    }
+    const patientID = req.session.patientId;
+    console.log("Patient ID:", patientID);
+    const patientCredentials = await pool.query("SELECT patientid, patientname, patientemail, phoneno FROM patients WHERE patientid = $1", [patientID]);
+    console.log(patientCredentials.rows[0]);
     const doctorsOnline = await pool.query("SELECT doctorid, doctorname, doctoremail, doctorphone, doctor_status FROM doctors WHERE doctor_status = true");
     console.log(doctorsOnline.rows);
-    res.render("match_maker",{doctor: doctorsOnline.rows});
+    res.render("match_maker",{doctor: doctorsOnline.rows, patient: patientCredentials.rows[0]});
 });
 app.get("/symptom_describer", async (req,res) => {
     res.render("symptom_describer");
+});
+app.post("/presscription", async (req,res) => {
+    const { patientName, phoneNumber, appointmentDate, appointmentTime, prescription } = req.body;
+    console.log("Patient Name:", patientName);
+    console.log("Patient Age:", phoneNumber);
+    console.log("Appointment Date:", appointmentDate);
+    console.log("Appointment Time:", appointmentTime);
+    console.log("Prescription:", prescription);
+
+    if (!patientName || !phoneNumber || !appointmentDate || !appointmentTime || !prescription) {
+        return res.status(400).json({ error: "All fields are required." });
+    }
+
+    try {
+        await pool.query('INSERT INTO prescriptions (patientname, phoneno, appointment_date, appointment_time, prescription) VALUES ($1, $2, $3, $4, $5)', [patientName, phoneNumber, appointmentDate, appointmentTime, prescription]);
+        console.log("Prescription saved successfully.");
+        res.status(200).json({ message: "Prescription saved successfully." });
+    } catch (error) {
+        console.error('Error saving prescription:', error.message);
+        res.status(500).json({ error: "Failed to save prescription." });
+    }
 });
 app.post("/responseWnidow", async (req,res) => {
     const userAsked = req.body.userQuery;
@@ -109,12 +232,13 @@ app.post("/responseWnidow", async (req,res) => {
         return res.status(400).json({ error: "Review text is required" });
     }
     try {
-        console.log("User query:",userAsked)
+        //console.log("User query:",userAsked)
         const aiResponse = await getResponseFor (userAsked);
-        console.log(aiResponse);
-        await pool.query('INSERT INTO patient_queries (userquery, airesponse) VALUES ($1, $2)', [userAsked, aiResponse]);
+        //console.log(aiResponse);
+        const cryptoKey = crypto.randomUUID().toString();
+        await pool.query('INSERT INTO patient_queries (userquery, airesponse, uqid) VALUES ($1, $2, $3)', [userAsked, aiResponse, cryptoKey]);
         console.log("Data logged successfully");
-        res.json({ redirect: `/responseWindow?userAsked=${encodeURIComponent(userAsked)}&aiResponse=${encodeURIComponent(aiResponse)}`});
+        res.json({ redirect: `/responseWindow?userAsked=${encodeURIComponent(userAsked)}&aiResponse=${encodeURIComponent(aiResponse)}&cryptoKey=${encodeURIComponent(cryptoKey)}` });
     } catch (error)
     {
         console.error('Error:',error.message);
@@ -159,21 +283,35 @@ app.get("/doctor_dashboard", async (req,res) => {
     const doctorId = req.session.userId;
     const response = await pool.query("UPDATE doctors set doctor_status = true WHERE doctorid = $1", [doctorId]);
     const doctorCredentials = await pool.query("SELECT doctorid, doctorname, doctoremail, doctorphone FROM doctors WHERE doctorid = $1", [doctorId]);
+    const appointments = await pool.query(
+      'SELECT appointmentid, status, patientname, phoneno, appointment_date, appointment_time FROM appointments WHERE doctorid = $1',
+      [doctorId]
+    );
+    const pending_appointments = await pool.query(
+      'SELECT appointmentid, status, patientname, phoneno, appointment_date, appointment_time FROM appointments WHERE doctorid = $1 AND status IS NULL',
+      [doctorId]);
     console.log(doctorCredentials.rows[0]);
     const doctor = (doctorCredentials.rows[0]);
-    res.render('doctor_dashboard',{ doctor });
+    res.render('doctor_dashboard2',{ doctor, appointments: appointments.rows, pendingAppointments: pending_appointments.rows});
 });
 app.get("/appointmentApprovalPage", async (req,res) => {
     const doctorId = req.session.userId;
     console.log("Doctor ID:", doctorId);
-    const appointments = await pool.query('SELECT "appointmentId", status, patientname, phoneno, appointment_date, appointment_time FROM appointments WHERE doctorid = $1', [doctorId]);
+    const appointments = await pool.query(
+      'SELECT appointmentid, status, patientname, phoneno, appointment_date, appointment_time FROM appointments WHERE doctorid = $1 AND status IS NULL',
+      [doctorId]
+    );
     console.log(appointments.rows);
     res.render("approveAppointments",{appointmentList: appointments.rows});
 });
-app.get("/responseWindow", (req,res) => {
-    const { userAsked, aiResponse } = req.query;
+app.get("/responseWindow", async (req,res) => {
+    const { userAsked, aiResponse, cryptoKey } = req.query;
+    if(!cryptoKey){
+      const cryptoKey = await pool.query("SELECT uqid FROM patient_queries WHERE userquery = $1 AND airesponse = $2", [userAsked, aiResponse]);
+    }
     const formattedResponse = marked.parse(aiResponse);
-    res.render('responseWindow',{ userAsked, formattedResponse});
+    console.log("Crypto Key:", cryptoKey);
+    res.render('responseWindow',{ userAsked, formattedResponse, cryptoKey: cryptoKey });
 });
 app.get("/queryAddresalPage", async (req,res) => {
     const query = await getQueries();
@@ -199,25 +337,28 @@ app.post("/submitDoctorQuery", async (req,res) => {
     }
 });
 app.get("/doctorLogout", (req,res) => {
-    req.session.destroy((err) => {
+  const response = pool.query("UPDATE doctors SET doctor_status = false WHERE doctorid = $1", [req.session.userId]);  
+  req.session.destroy((err) => {
         if (err) {
             console.error("Session destruction error:", err);
-            return res.status(500).json({ message: "Failed to log out." });
+            return res.status(500).json({ message: `Failed to log out. Response : ${response}` });
         }
+
         res.redirect("/doctorLogin");
     });
 });
-app.post('/appointments/update', (req, res) => {
+app.post('/appointments/update', async (req, res) => {
   const { appointment_id, action } = req.body;
-  
+  const doctorId = req.session.userId;
+  console.log("Doctor ID:", doctorId);
+  console.log("Appointment ID:", appointment_id);
   if (action === 'approve') {
     // Update DB to set status = 'approved'
-    pool.query('UPDATE appointments SET status = true WHERE "appointmentId" = $1', [appointment_id]);
+    await pool.query("UPDATE appointments SET status = true WHERE appointmentid = $1", [parseInt(appointment_id, 10)]);
   } else if (action === 'reject') {
     // Update DB to set status = 'rejected'
-    pool.query('UPDATE appointments SET status = false WHERE "appointmentId" = $1', [appointment_id]);
+    await pool.query("UPDATE appointments SET status = false WHERE appointmentid = $1", [parseInt(appointment_id, 10)]);
   }
-
   res.redirect('/appointmentApprovalPage'); // Redirect back to the page
 });
 
@@ -233,20 +374,23 @@ app.post('/logout', (req, res) => {
         return res.status(500).json({ message: 'Error during logout' });
       }
       res.clearCookie('connect.sid');
-      res.status(200).json({ message: 'Logout successful' });
-      // res.redirect('/');
+      res.redirect('/doctorLogin');
     });
   });
 
-const doctorID = 1; // Replace with the actual doctor ID you want to fetch appointments for
-app.get("/getAppt", (req,res) => {
+app.get("/getAppt", async (req,res) => {
     console.log("Appointment page loaded.");
     const doctorID = req.query.doctorId;
+    const patientID = req.session.patientId; // Assuming patientId is stored in session
+    const patient = await pool.query("SELECT patientid, patientname, patientemail, phoneno FROM patients WHERE patientid = $1", [patientID]);
     console.log("Doctor ID:", doctorID); 
-    res.render("appointment_maker");
+    console.log("Patient ID:", patientID);
+    console.log("Patient Details:", patient.rows[0]);
+    res.render("appointment_maker",{ patientDetails: patient.rows[0], doctorId: doctorID });
 });
 app.post('/bookAppointment', async (req, res) => {
   console.log(req.body);
+  const doctorID = req.body.doctorId; // Assuming doctorId is sent in the request body
   const patientname = req.body.name;
   const phoneno = req.body.phone;
   const appointmentDate = req.body.date;
@@ -277,3 +421,16 @@ app.get("/", async (req,res) => {
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
   });
+/*
+  -- Table: appointments
+
+  CREATE TABLE appointments (
+    appointmentId SERIAL PRIMARY KEY,
+    doctorid INTEGER NOT NULL,
+    patientname VARCHAR(100) NOT NULL,
+    phoneno VARCHAR(20) NOT NULL,
+    appointment_date DATE NOT NULL,
+    appointment_time TIME NOT NULL,
+    status BOOLEAN DEFAULT NULL
+  );
+*/

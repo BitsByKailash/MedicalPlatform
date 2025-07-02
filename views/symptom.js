@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert("Please enter a valid review before submitting.");
                 return;
             }
-            const response = await fetch("/responsewnidow", {
+            const response = await fetch("/responseWnidow", {
                 method: "POST",
                headers: {
                 "Content-Type": "application/json",
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
           //console.log("Attached event listener");
       }
   });
-  for (let index = 0; index < 9; index++) 
+  for (let index = 1; index <= 9; index++) 
     {
     const element = document.getElementById(`sympt${index}`);
     document.addEventListener("DOMContentLoaded", () => {

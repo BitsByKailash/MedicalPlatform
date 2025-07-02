@@ -2,71 +2,182 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question Tracker</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View Your Query</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+
+  <style>
+    body {
+      background: #0f1117;
+      font-family: 'Segoe UI', sans-serif;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .neon-box {
+      background: #1a1d2b;
+      border: 1px solid #2c2f3e;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 0 15px #00f2ff33;
+      max-width: 700px;
+      width: 100%;
+      margin-top: 30px;
+    }
+
+    .neon-box h2 {
+      color: #00f2ff;
+      font-weight: bold;
+      border-bottom: 1px solid #2c2f3e;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #7de2fc;
+    }
+
+    .form-control {
+      background: #15171f;
+      border: 1px solid #2c2f3e;
+      color: #e0e0e0;
+      border-radius: 10px;
+    }
+
+    .form-control:focus {
+      border-color: #00f2ff;
+      box-shadow: 0 0 8px #00f2ff66;
+      background-color: #1d202a;
+      color: #fff;
+    }
+
+    .btn-neon {
+      background: linear-gradient(90deg, #00f2ff, #00d1ff);
+      border: none;
+      color: #000;
+      font-weight: bold;
+      border-radius: 10px;
+      padding: 10px 20px;
+      transition: 0.3s ease;
+      box-shadow: 0 0 10px #00f2ff55;
+    }
+
+    .btn-neon:hover {
+      box-shadow: 0 0 15px #00f2ffaa;
+    }
+
+    .info-box {
+      background: #111319;
+      border-left: 4px solid #00f2ff;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+
+    .info-title {
+      color: #7de2fc;
+      font-weight: bold;
+    }
+
+    .info-value {
+      color: #e0f7ff;
+    }
+
+    .input-group {
+      max-width: 500px;
+      margin: 20px auto;
+    }
+  </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Fifth navbar example">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Get Well Soon</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-    
-          <div class="collapse navbar-collapse" id="navbarsExample05">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Track</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item " href="#">Describe</a></li>
-                  <li><a class="dropdown-item" href="#">Consult</a></li>
-                </ul>
-              </li>
-            </ul>
-            <form role="search">
-              <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-            </form>
-          </div>
-        </div>
-      </nav>
-  <div class="container py-5">
-    <div class="card shadow-lg border-0 rounded-4">
-      <div class="card-header bg-primary text-white">
-        <h2 class="mb-0">Asked Questions</h2>
+
+  <h1 class="text-center text-info mb-4">🔍 View Your Query</h1>
+
+  <!-- Input Form to Enter Query Key -->
+  <form class="input-group mb-5" method="GET" action="/viewQuery">
+    <input type="text" name="queryKey" class="form-control" placeholder="Enter your unique Query ID" required>
+    <button class="btn btn-neon" type="submit">View</button>
+  </form>
+
+  <% if (typeof query !== 'undefined' && query) { %>
+    <!-- Display the Query Details -->
+    <div class="neon-box">
+      <h2>Query Details</h2>
+
+      <div class="info-box">
+        <div class="info-title">🔹 User Query:</div>
+        <div class="info-value"><%= query?query.userquery:'' %></div>
       </div>
-      <div class="card-body p-4">
-        <table class="table table-striped table-hover">
-          <thead class="table-primary">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">User Query</th>
-              <th scope="col">AI Response</th>
-              <th scope="col">Verification status</th>
-              <th scope="col">View Querry</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% questions.forEach((question, index) => { %>
-              <tr>
-                <th scope="row"><%= index + 1 %></th>
-                <td><%= question.userQuery %></td>
-                <td><%= question.aiResponse %></td>
-                <td><%= question.verificationStatus %></td>
-                <td><button class="btn btn-primary" id="querryButton">View Querry</button></td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
+
+      <div class="info-box">
+        <div class="info-title">🤖 AI Response:</div>
+        <div class="info-value"><%= query?query.airesponse:'' %></div>
+      </div>
+
+      <div class="info-box">
+        <div class="info-title">📊 Verification Status:</div>
+        <div class="info-value"><%= query?query.doctorverified:'' %></div>
+      </div>
+      <div class="info-box">
+        <div class="info-title">🧑‍⚕️ Doctor Comments:</div>
+        <div class="info-value"><%= query?query.doctorresponse:'' %></div>
       </div>
     </div>
-  </div>
+    </div>
+  <% } else if (typeof queryNotFound !== undefined) { %>
+    <!-- No Query Found -->
+    <div class="alert alert-warning text-center w-75 mt-4">
+      ❌ No query found with the provided ID.
+    </div>
+  <% } %>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Optional: Add any JavaScript functionality if needed
+    // query_viewer.js
+
+document.addEventListener("DOMContentLoaded", () => {
+  const queryInput = document.querySelector('input[name="queryKey"]');
+
+  // Auto-focus input on page load
+  if (queryInput) {
+    queryInput.focus();
+  }
+
+  // Optional: Submit form on Enter key
+  queryInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      this.form.submit();
+    }
+  });
+
+  // Optional: Show success or error animation (if needed)
+  const neonBox = document.querySelector('.neon-box');
+  if (neonBox) {
+    neonBox.classList.add('glow-fade-in');
+  }
+});
+  </script>
+  <style>
+    .glow-fade-in {
+      animation: glowFadeIn 0.5s ease-in-out forwards;
+    }
+
+    @keyframes glowFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </body>
 </html>

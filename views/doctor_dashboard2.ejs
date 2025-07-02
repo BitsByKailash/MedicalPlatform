@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Skeleton</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: white;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100vw;
+      max-width: 100%;
+    }
+    .doctor-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid #888;
+    }
+    .content {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 60px;
+      background: linear-gradient(to bottom, #1e2b33, #16222a);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 1rem;
+      flex-shrink: 0;
+    }
+
+    .sidebar-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #1f1f1f;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      margin: 10px 0;
+      border-radius: 10px;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .navbar {
+      height: 50px;
+      background-color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      border-bottom: 1px solid #333;
+      flex-shrink: 0;
+    }
+
+    .dashboard-title {
+      font-weight: bold;
+    }
+
+    .grid {
+      padding: 1rem;
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      flex: 1;
+      height: 100%;
+      overflow-y: auto;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      color: white;
+      transition: all 0.3s ease;
+      min-height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .card:hover {
+      box-shadow: 0 12px 40px rgba(0, 255, 255, 0.25);
+    }
+    .tall {
+      grid-column: span 2;
+    }
+
+    .carousel-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .carousel {
+      width: 100%;
+      height: 100%;
+    }
+    .table {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+      display: table;
+      width: 100%;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      margin-top: 1rem;
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      border-collapse: separate;
+      border-spacing: 0 10px; /* Add spacing between rows */
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    .table th, .table td {
+      color: #ccc;
+      border: none;
+    }
+    .table th {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    /* .clock-face {
+      width: 200px;
+      height: 200px;
+      border: 5px solid white;
+      border-radius: 50%;
+      position: relative;
+    } */
+    .clock-face {
+  background: #0a0a0a; /* Darker than other cards */
+  border: 4px solid #1f1f1f; /* Subtle outline */
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  position: relative;
+  /* box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 255, 0.05); */
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1), inset 0 0 10px rgba(0, 255, 255, 0.05);
+}
+
+    .clock-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px; /* space between clock and label */
+}
+    .hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom center;
+      transform: rotate(0deg);
+      transition: transform 0.1s linear;
+    }
+
+    .hand.hour {
+      width: 6px;
+      height: 50px;
+      background: white;
+      z-index: 2;
+    }
+
+    .hand.minute {
+      width: 4px;
+      height: 70px;
+      background: #ccc;
+      z-index: 3;
+    }
+
+    .hand.second {
+      width: 2px;
+      height: 90px;
+      background: red;
+      z-index: 4;
+    }
+
+    .tick {
+      position: absolute;
+      width: 2px;
+      height: 10px;
+      background: white;
+      top: 50%;
+      left: 50%;
+      transform-origin: center center;
+    }
+
+    .center-dot {
+      width: 10px;
+      height: 10px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    .digital-clock {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: black;
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-family: monospace;
+      font-size: 1.1rem;
+      color: white;
+      z-index: 5;
+      margin-bottom: 20px;
+    }
+    .timezone-label {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      background: rgba(0, 255, 255, 0.05);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-family: 'Outfit', 'Segoe UI', sans-serif;
+      color: #b0eaff;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      display: inline-block;
+  }
+
+    /* .appointment-card {
+      background: linear-gradient(135deg, #1f1f1f, #2a2a2a);
+      border: 1px solid #3a3a3a;
+      border-radius: 10px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+      text-align: left;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .appointment-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 20px rgba(0, 209, 178, 0.4);
+    } */
+
+    .appointment-card .icon {
+      font-size: 2.5rem;
+      margin-right: 1rem;
+    }
+
+    .appointment-card h5 {
+      margin-bottom: 0.5rem;
+    }
+
+    .appointment-card p {
+      margin: 0;
+      color: #ccc;
+    }
+
+  .btn-outline-info {
+  border-color: #00f2fe;
+  color: #00f2fe;
+  }
+  .btn-outline-info:hover {
+  background-color: #00f2fe;
+  color: #121212;
+  }
+
+    
+    .ai-card {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 10px; /* Match with .card */
+  padding: 1rem;       /* Match with .card */
+  background: inherit; /* Use the same background as default card */
+  box-shadow: inherit; /* Use same shadow as default card */
+  overflow: hidden;
+  transition: all 0.3s ease;
+  color: inherit;      /* Inherit default text color */
+}
+
+/* Glowing rotating border */
+.ai-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, #00f2fe, #4facfe, #00c6ff, #00f2fe);
+  animation: rotate 5s linear infinite;
+  z-index: 0;
+  opacity: 0.5;
+  filter: blur(8px);
+}
+
+.ai-card::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: inherit;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+/* Ensure text and content appear on top */
+.ai-card * {
+  position: relative;
+  z-index: 2;
+}
+
+.ai-header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.ai-body p {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.btn-glow {
+  background-color: #00f2fe;
+  color: #121212;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+  transition: all 0.3s ease;
+}
+.prescription-card {
+  position: relative;
+  background: linear-gradient(145deg, rgba(0, 255, 153, 0.06), rgba(0, 128, 128, 0.05)) !important;
+  border: 1px solid rgba(0, 255, 153, 0.15) !important;
+  backdrop-filter: blur(14px) !important;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 255, 153, 0.08), inset 0 0 8px rgba(0, 255, 153, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.prescription-card:hover {
+  box-shadow: 0 12px 36px rgba(0, 255, 153, 0.2);
+  transform: translateY(-4px);
+}
+
+.pill-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  color: #00ffb3;
+  animation: pulse 1.5s infinite;
+  text-shadow: 0 0 12px rgba(0, 255, 153, 0.6);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    text-shadow: 0 0 12px rgba(0, 255, 153, 0.6);
+  }
+  50% {
+    transform: scale(1.15);
+    text-shadow: 0 0 20px rgba(0, 255, 153, 0.9);
+  }
+}
+
+.coming-soon-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, #00f2ff, #007cff);
+  color: #000;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 50px;
+  box-shadow: 0 0 12px rgba(0, 242, 255, 0.4);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* @keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+} */
+.prescription-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #aaffee;
+  margin-bottom: 0.5rem;
+}
+
+.prescription-text {
+  color: #cceedd;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.btn-prescribe {
+  background-color: #00ffb3;
+  color: #121212;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  box-shadow: 0 0 10px rgba(0, 255, 153, 0.4);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-prescribe:hover {
+  background-color: #00e6a1;
+  box-shadow: 0 0 16px rgba(0, 255, 153, 0.6);
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .tall {
+    grid-column: span 1;
+  }
+  .card {
+    min-height: 150px;
+  }
+  .carousel-inner img {
+    height: auto;
+    max-height: 200px;
+  }
+  .clock-face {
+    width: 150px;
+    height: 150px;
+  }
+  .hand.hour {
+    height: 40px;
+  }
+  .hand.minute {
+    height: 55px;
+  }
+  .hand.second {
+    height: 70px;
+  }
+  .digital-clock {
+    top: -30px;
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 768px) {
+  .calendar-card {
+    padding: 0.75rem;
+  }
+
+  .calendar-month {
+    font-size: 1.2rem;
+  }
+
+  .calendar-nav-btn {
+    font-size: 1.2rem;
+  }
+
+  .calendar-weekdays,
+  .calendar-grid {
+    gap: 0.3rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-card {
+    padding: 0.5rem;
+    border-radius: 12px;
+  }
+}
+@media (max-width: 1670px) {
+  .tick {
+    display: none !important;
+  }
+}
+@media (max-width: 1370px) {
+  .clock-container {
+    display: none !important;
+  }
+
+  .calendar-month {
+    font-size: 1rem;
+  }
+
+  .calendar-nav-btn {
+    font-size: 1rem;
+  }
+
+  .calendar-weekdays,
+  .calendar-grid {
+    gap: 0.2rem;
+    font-size: 0.7rem;
+  }
+
+  .calendar-grid div {
+    padding: 0.4rem 0;
+    border-radius: 6px;
+  }
+}
+
+
+    @media (max-width: 480px) {
+      .navbar {
+        padding: 0 0.5rem;
+      }
+      .dashboard-title {
+        font-size: 1rem;
+      }
+      .sidebar {
+        width: 50px;
+      }
+      .sidebar-icon {
+        width: 30px;
+        height: 30px;
+      }
+      .container, .content, .main, .grid {
+        padding: 0;
+      }
+      .card {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+  <style>
+.calendar-card {
+  padding: 1rem;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Outfit', sans-serif;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+.calendar-card > div {
+  flex: 1;
+  overflow-y: auto;
+}
+.calendar-nav-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #b0eaff;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.calendar-nav-btn:hover {
+  color: #00f2fe;
+}
+
+.calendar-header {
+  width: 100%;
+  text-align: center;
+}
+
+.calendar-month {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.calendar-weekdays div {
+  opacity: 0.6;
+  font-weight: 500;
+}
+
+.calendar-grid div {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 0;
+  border-radius: 8px;
+}
+
+.calendar-grid .today {
+  background-color: #00f2fe;
+  color: #121212;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="navbar">
+      <div class="dashboard-title">Dashboard</div>
+    </div>
+    <div class="content">
+      <div class="sidebar">
+        <a href="/profilePage"><div class="sidebar-icon">
+          <img src="https://picsum.photos/200/300.jpg" alt="<%= doctor.doctorname %>" class="doctor-image" style="margin-right: 1rem;">
+        </div></a>
+        <div class="sidebar-icon">
+          <img src="./Docai.jpg" alt="Doctor AI" class="doctor-image" style="margin-right: 1rem;">
+        </div>
+        <div class="sidebar-icon" style="cursor: pointer;" onclick="submitLogoutForm()">
+        <img src="./Logout.png" alt="Logout" class="doctor-image" style="margin-right: 1rem;">
+      </div>
+      <form id="logoutForm" action="/logout" method="POST" style="display: none;"></form>
+        <script>
+          function submitLogoutForm() {
+            document.getElementById('logoutForm').submit();
+          }
+        </script>
+
+      </div>
+      <div class="main">
+        <div class="grid">
+          <div class="card tall">
+            <div class="card glassy-card mx-auto p-5 text-center" style="max-width: 600px;">
+              <h3 class="text-info mb-3">🧑‍⚕️ Patient Referral System</h3>
+              <p class="fs-5 text-light mb-4">
+                A streamlined way to refer patients to trusted specialists and collaborate seamlessly.
+              </p>
+              <div class="coming-soon-badge mb-4">🚧 Coming Soon 🚀</div>
+              <p class="text-muted">
+                We're working hard to bring you an advanced referral interface in the next release.
+              </p>
+            </div>
+          </div>
+          <div class="card appointment-card">
+              <div style="display: flex; align-items: center;">
+                <div class="icon">🗓️✔️</div>
+                  <div>
+                    <h5>Pending Appointment</h5>
+                      <p>You have <strong class="no_of_appts"><%= pendingAppointments.length %></strong> new appointments to approve.</p>
+                  </div>
+                </div>
+                <a href="/appointmentApprovalPage" class="btn btn-outline-info mt-3">Review Now →</a>  
+          </div>
+           <div class="card ai-card">
+            <div class="ai-header">💡 AI Answers</div>
+            <div class="ai-body">
+              <p>Check if your boi AI has pending verifications.</p>
+              <a href="/queryAddresalPage" class="btn btn-glow">Review AI Responses →</a>
+            </div>
+          </div>
+          <div class="card calendar-card" style="overflow: hidden; display: flex; flex-direction: column; height: 100%;">
+            <div style="flex: 1; overflow-y: auto; width: 100%;">
+              <div class="calendar-header">
+                <div class="calendar-nav">
+                  <button id="prev-month" class="calendar-nav-btn">‹</button>
+                  <div class="calendar-month" id="calendar-month">June 2025</div>
+                  <button id="next-month" class="calendar-nav-btn">›</button>
+                </div>
+                <div class="calendar-weekdays">
+                  <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                </div>
+                <div class="calendar-grid" id="calendar-grid"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="overflow: auto; height: 100%; align-items: flex-start; justify-content: flex-start;">
+            <!-- Add trending Medical News Here -->
+            <h5>Trending Medical News</h5>
+            <div class="tagembed-widget" style="width:100%;height:100%;overflow:auto;" data-widget-id="290291" website="1"></div><script src="https://widget.tagembed.com/embed.min.js" type="text/javascript"></script>
+          </div>
+          <div class="card tall" style="display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden;">
+            <h5 style="margin-bottom: 1rem;">Upcoming Appointments</h5>
+            <div style="flex: 1; overflow-y: auto; width: 100%;">
+              <table class="table table-striped table-bordered border-primary">
+                <thead>
+                  <tr>
+                    <th>Patient Name</th>
+                    <th>Appointment Date</th>
+                    <th>Phone number</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                  <% appointments.forEach(appointment => { %>
+                    <tr>
+                      <td><%= appointment.patientname %></td>
+                      <td><%= appointment.appointment_date %></td>
+                      <td><%= appointment.phoneno %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card prescription-card">
+            <div class="pill-icon">💊</div>
+            <h5 class="prescription-title">Provide Prescription</h5>
+            <p class="prescription-text">
+              Quickly send prescriptions to patients after their appointment.
+            </p>
+            <a href="/providePrescriptionPage" class="btn btn-prescribe">Write Now →</a>
+          </div>
+          <div class="card clock-container">
+            <div class="clock-face" id="clock-face">
+              <div class="center-dot"></div>
+              <div class="hand hour" id="hour-hand"></div>
+              <div class="hand minute" id="minute-hand"></div>
+              <div class="hand second" id="second-hand"></div>
+              <div class="digital-clock" id="digital-clock"></div>
+            </div>
+            <div class="timezone-label">Time Zone: <span id="timezone"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const clockFace = document.getElementById('clock-face');
+    for (let i = 0; i < 12; i++) {
+      const tick = document.createElement('div');
+      tick.className = 'tick';
+      tick.style.transform = `rotate(${i * 30}deg) translateY(-80px)`;
+      clockFace.appendChild(tick);
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = now.getHours();
+
+      const secondDeg = seconds * 6;
+      const minuteDeg = minutes * 6 + seconds * 0.1;
+      const hourDeg = (hours % 12) * 30 + minutes * 0.5;
+
+      document.getElementById('second-hand').style.transform = `rotate(${secondDeg}deg)`;
+      document.getElementById('minute-hand').style.transform = `rotate(${minuteDeg}deg)`;
+      document.getElementById('hour-hand').style.transform = `rotate(${hourDeg}deg)`;
+
+      const pad = (n) => n.toString().padStart(2, '0');
+      const timeStr = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+      document.getElementById('digital-clock').textContent = timeStr;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+    document.getElementById('timezone').textContent =
+    Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local';
+  </script>
+  <script>
+    const now = new Date();
+    const hours = now.getHours();
+    const greeting = hours < 12 ? 'Good Morning' : hours < 18 ? 'Good Afternoon' : 'Good Evening';
+    const doctor_name = '<%= doctor.doctorname %>'; // Assuming doctor_name is passed from the server
+    const doctorname = doctor_name ? doctor_name : 'Doctor';
+    document.querySelector('.dashboard-title').textContent = `${greeting}, Dr. ${doctorname}`;
+  </script>
+<script>
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+function buildCalendar(month, year) {
+  const now = new Date();
+  const today = now.getDate();
+  const thisMonth = now.getMonth();
+  const thisYear = now.getFullYear();
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const totalDays = new Date(year, month + 1, 0).getDate();
+  const grid = document.getElementById('calendar-grid');
+  const monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
+
+  document.getElementById('calendar-month').textContent = `${monthName} ${year}`;
+  grid.innerHTML = '';
+
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement('div');
+    grid.appendChild(empty);
+  }
+
+  for (let day = 1; day <= totalDays; day++) {
+    const cell = document.createElement('div');
+    cell.textContent = day;
+    if (day === today && month === thisMonth && year === thisYear) {
+      cell.classList.add('today');
+    }
+    grid.appendChild(cell);
+  }
+}
+
+document.getElementById('prev-month').addEventListener('click', () => {
+  currentMonth--;
+  if (currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  }
+  buildCalendar(currentMonth, currentYear);
+});
+
+document.getElementById('next-month').addEventListener('click', () => {
+  currentMonth++;
+  if (currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  }
+  buildCalendar(currentMonth, currentYear);
+});
+
+buildCalendar(currentMonth, currentYear);
+</script>
+
+</body>
+</html>

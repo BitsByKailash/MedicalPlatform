@@ -6,125 +6,173 @@
   <title>Appointments</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
     body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #e0f7fa, #e1bee7); /* soft gradient */
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-h2.page-title {
-  position: absolute;
-  top: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 2.5rem;
-  color: #4a148c;
-  margin: 0;
-  text-align: center;
-}
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+      color: #f0f0f0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      backdrop-filter: blur(10px);
+      background-color: rgba(30, 30, 30, 0.7);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar-brand, .nav-link {
+      color: #f0f0f0 !important;
+      font-weight: 600;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-top: 120px;
+      font-size: 2.8rem;
+      color: #a7ccf1;
+      font-weight: 600;
+    }
 
     .appointment-card {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  backdrop-filter: blur(15px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  padding: 40px;
-  width: 90%;
-  max-width: 500px;
-  color: #333;
-  text-align: center;
-}
-.appointment-card p {
-  font-size: 1.1rem;
-  color: #555;
-}
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      padding: 30px;
+      margin: 20px auto;
+      width: 95%;
+      max-width: 600px;
+      color: #e0e0e0;
+      transition: all 0.3s ease-in-out;
+    }
+
     .appointment-card:hover {
-      transform: scale(1.01);
+      transform: scale(1.02);
+      box-shadow: 0 0 15px rgba(167, 204, 241, 0.4);
     }
-    .appointment-time {
-      font-weight: 600;
-      color: #495057;
+
+    .appointment-card p {
+      margin: 8px 0;
+      font-size: 1rem;
+      color: #d0d0d0;
     }
-    .appointment-date {
-      font-size: 0.9rem;
-      color: #6c757d;
-    }
+
     .patient-name {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      color: #ffffff;
       font-weight: 600;
-      color: #212529;
     }
+
+    .appointment-time, .appointment-date {
+      color: #b0c4de;
+    }
+
     .appointment-card .btn {
-  margin: 10px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 12px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+      margin: 8px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
 
-.appointment-card .btn.approve {
-  background-color: #4caf50;
-  color: white;
-}
+    .appointment-card .btn.approve {
+      background-color: #28a745;
+      color: white;
+    }
 
-.appointment-card .btn.reject {
-  background-color: #f44336;
-  color: white;
-}
+    .appointment-card .btn.reject {
+      background-color: #dc3545;
+      color: white;
+    }
 
-.appointment-card .btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
+    .appointment-card .btn:hover {
+      transform: scale(1.05);
+    }
 
     .action-buttons {
-      margin-top: 0.5rem;
+      margin-top: 1rem;
     }
+
+    .no-appointments {
+      text-align: center;
+      color: #aaa;
+      margin-top: 100px;
+    }
+
+    .no-appointments img {
+      max-width: 300px;
+      margin-bottom: 20px;
+    }
+
   </style>
 </head>
 <body>
-  <div class="container py-4">
-    <h2 class="page-title">Doctor's Appointments</h2>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Doctor Panel</a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/doctor_dashboard">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link disabled" href="#">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="/appointmentApprovalPage">Consults</a></li>
+          <li class="nav-item"><a class="nav-link" href="/doctorLogout">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <h2 class="page-title">Doctor's Appointments</h2>
+
+  <div class="container">
 
     <% if (appointmentList && appointmentList.length > 0) { %>
-      
       <% appointmentList.forEach(app => { %>
-  <% if (app.status === null) { %>
-    <div class="appointment-card mb-3 p-3 border rounded">
-      <!-- You can display more appointment info here if needed -->
-      <p><strong>Appointment ID:</strong> <%= app.appointmentId %></p>
-      <p><strong>Patient Name:</strong> <%= app.patientname %></p>
-      <p><strong>Contact Number:</strong> <%= app.phoneno %></p>
-      <p><strong>Date of Request:</strong> <%= app.appointment_date %></p>
-      <p><strong>Time of Request:</strong> <%= app.appointment_time %></p>
-      <p><strong>Status:</strong> <%= (app.status === null)?'pending':'resolved' %></p>
+        <% if (app.status === null) { %>
+          <div class="appointment-card">
+            <p><strong>Appointment ID:</strong> <%= app.appointmentId %></p>
+            <p class="patient-name">👤 <%= app.patientname %></p>
+            <p><strong>Phone:</strong> <%= app.phoneno %></p>
+            <p class="appointment-date"><strong>Date:</strong> <%= app.appointment_date %></p>
+            <p class="appointment-time"><strong>Time:</strong> <%= app.appointment_time %></p>
+            <p><strong>Status:</strong> <%= (app.status === null) ? 'Pending' : 'Resolved' %></p>
 
-      <div class="action-buttons d-flex gap-2 mt-3">
-        <!-- Approve form -->
-        <form action="/appointments/update" method="POST">
-          <input type="hidden" name="appointment_id" value="<%= app.appointmentId %>" />
-          <input type="hidden" name="action" value="approve" />
-          <button type="submit" class="btn btn-sm btn-approve">Approve</button>
-        </form>
+            <div class="action-buttons d-flex justify-content-center">
+              <form action="/appointments/update" method="POST">
+                <input type="hidden" name="appointment_id" value="<%= app.appointmentid %>" />
+                <input type="hidden" name="action" value="approve" />
+                <button type="submit" class="btn btn-success approve">Approve</button>
+              </form>
 
-        <!-- Reject form -->
-        <form action="/appointments/update" method="POST">
-          <input type="hidden" name="appointment_id" value="<%= app.appointmentId %>" />
-          <input type="hidden" name="action" value="reject" />
-          <button type="submit" class="btn btn-sm btn-reject">Reject</button>
-        </form>
+              <form action="/appointments/update" method="POST">
+                <input type="hidden" name="appointment_id" value="<%= app.appointmentid %>" />
+                <input type="hidden" name="action" value="reject" />
+                <button type="submit" class="btn btn-danger reject">Reject</button>
+              </form>
+            </div>
+          </div>
+        <% } %>
+      <% }); %>
+    <% } else { %>
+      <div class="no-appointments">
+        <img src="./No_appointments_Image.jpeg" alt="No Appointments">
+        <p class="lead">No unverified appointments at the moment.</p>
       </div>
     <% } %>
-        
-        <% }); %>
-      <% } %>
+
   </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./approveAppointments.js"></script>
 </body>
 </html>
