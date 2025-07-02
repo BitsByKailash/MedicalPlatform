@@ -33,6 +33,9 @@ const pool = new Pool ({
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT
+    ssl: {
+      rejectUnauthorized: false
+    }
     });
 pool.connect().then(() => console.log('Connected to the database'))
 .catch((err)=> console.error("Error in connecting to the database :",err));
@@ -421,16 +424,4 @@ app.get("/", async (req,res) => {
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
   });
-/*
-  -- Table: appointments
 
-  CREATE TABLE appointments (
-    appointmentId SERIAL PRIMARY KEY,
-    doctorid INTEGER NOT NULL,
-    patientname VARCHAR(100) NOT NULL,
-    phoneno VARCHAR(20) NOT NULL,
-    appointment_date DATE NOT NULL,
-    appointment_time TIME NOT NULL,
-    status BOOLEAN DEFAULT NULL
-  );
-*/
