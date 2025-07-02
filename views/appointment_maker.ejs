@@ -79,55 +79,75 @@
   <div class="container">
     <h2>Book an Appointment</h2>
     <form id="appointmentForm">
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" required />
+  <label>Name</label>
+  <div id="nameDisplay"><%= patientDetails.patientname %></div>
+  <input type="hidden" id="name" name="name" value="<%= patientDetails.patientname %>" />
 
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}" placeholder="1234567890" />
+  <label>Phone Number</label>
+  <div id="phoneDisplay"><%= patientDetails.phoneno %></div>
+  <input type="hidden" id="phone" name="phone" value="<%= patientDetails.phoneno %>" />
 
-      <label for="date">Select Date</label>
-      <input type="text" id="date" name="date" placeholder="Pick a date" required />
+  <label for="date">Select Date</label>
+  <input type="text" id="date" name="date" placeholder="Pick a date" required />
 
-      <label for="time">Select Time</label>
-      <input type="text" id="time" name="time" placeholder="Pick a time" required />
+  <label for="time">Select Time</label>
+  <input type="text" id="time" name="time" placeholder="Pick a time" required />
 
-      <button type="submit">Confirm Appointment</button>
-    </form>
+  <!-- Include hidden input for doctorId -->
+  <input type="hidden" id="doctorId" name="doctorId" value="<%= doctorId %>" />
+
+  <button type="submit">Confirm Appointment</button>
+</form>
+
   </div>
 
   <!-- Flatpickr JS -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
   <script>
-    // Initialize date picker
-    flatpickr("#date", {
-      dateFormat: "Y-m-d",
-      altInput: true,
-      altFormat: "F j, Y"
-    });
+  flatpickr("#date", {
+    dateFormat: "Y-m-d",
+    altInput: true,
+    altFormat: "F j, Y"
+  });
 
-    // Initialize time picker
-    flatpickr("#time", {
-      enableTime: true,
-      noCalendar: true,
-      dateFormat: "H:i",
-      time_24hr: false,
-      altInput: true,
-      altFormat: "h:i K"
-    });
+  flatpickr("#time", {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: false,
+    altInput: true,
+    altFormat: "h:i K"
+  });
 
-    // Handle form submission
-    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+  document.getElementById("appointmentForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const date = document.getElementById('date').value;
-      const time = document.getElementById('time').value;
+    const formData = new FormData(event.target);
+    const appointmentData = Object.fromEntries(formData.entries());
 
-      alert(`Appointment booked!\n\nName: ${name}\nPhone: ${phone}\nDate: ${date}\nTime: ${time}`);
-    });
-  </script>
-  <script src="./appointment_maker.js"></script>
+    try {
+      const response = await fetch("/bookAppointment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(appointmentData)
+      });
+
+      if (!response.ok) throw new Error("Network error");
+
+      const result = await response.json();
+      alert(result.message);
+      window.location.href = "/patient_dashboard";
+    } catch (error) {
+      console.error("Error booking appointment:", error);
+      alert("Failed to book appointment. Please try again.");
+    }
+  });
+</script>
+
+
+  <!-- <script src="./appointment_maker.js"></script> -->
 </body>
 </html>

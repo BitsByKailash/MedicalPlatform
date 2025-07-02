@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -69,16 +69,10 @@
       <div class="container-fluid py-5">
         <h1 class="display-5 fw-bold">Describe Your symptoms</h1>
         <div class="container mt-5">
-          <!-- <div class="jumbotron p-5 bg-light"> -->
-            <!-- <h1 class="display-4">Voice Input Textarea</h1>
-            <p class="lead">Speak your thoughts, and we'll capture them for you!</p> -->
             <textarea id="voiceTextarea" placeholder="Start speaking or typing..."></textarea>
             <button id="micButton" class="btn btn-primary btn-lg">🎙 Voice type</button>
             <button id="submitButton" class="btn btn-primary btn-lg">Submit</button>
-          <!-- </div>
-        </div> -->
-      
-        <!-- <button class="btn btn-primary btn-lg" id = "submitButton" type="button">Example button</button> -->
+          
       </div>
     </div>
     <div class="container marketing">
@@ -89,20 +83,20 @@
           <h2 class="fw-normal">Headache</h2>
           <p id="symptomText1">A throbbing stinging or blinding headache with or without spots in the eye</p>
           <p><a class="btn btn-secondary" id="sympt1" href="#">Select symptom</a></p>
-        </div><!-- /.col-lg-4 -->
+        </div>
         <div class="col-lg-4">
           <img class="bd-placeholder-img rounded-circle" src="./chestpain.png" width="140" height="140" />
           <h2 class="fw-normal">Chest Pain</h2>
           <p id="symptomText2">Chest pain in different areas. Sharp stabbing or pain that spreads with or without movement.</p>
           <p><a class="btn btn-secondary" id="sympt2" href="#">Select symptom </a></p>
-        </div><!-- /.col-lg-4 -->
+        </div>
         <div class="col-lg-4">
           <img class="bd-placeholder-img rounded-circle" src="./cough.png" width="140" height="140" />
           <h2 class="fw-normal">Coughing</h2>
           <p id="symptomText3">Severe to mild cough that causes a burning in the throat or pain in the chest. Sometimes accompanied by a runny nose or a sore throat.</p>
           <p><a class="btn btn-secondary" id="sympt3" href="#">Select symptom </a></p>
-        </div><!-- /.col-lg-4 -->
-      </div><!-- /.row -->
+        </div>
+      </div>
       <div class="container marketing">
         <div class="row">
           <div class="col-lg-4">
@@ -110,20 +104,20 @@
             <h2 class="fw-normal">Stomach Pain</h2>
             <p id="symptomText4">A throbbing or consistent pain in the stomach that increases or remains the same. Followed by vomiting or nausea.</p>
             <p><a class="btn btn-secondary" id="sympt4" href="#">Select symptom</a></p>
-          </div><!-- /.col-lg-4 -->
+          </div>
           <div class="col-lg-4">
             <img class="bd-placeholder-img rounded-circle" src="./muscle pain.png" width="140" height="140" />
             <h2 class="fw-normal">Muscular pain</h2>
             <p id="symptomText5">Pain in the limbs or elsewhare when flexing or moving the part or muscles. This is usually a soreness or annoying pain.</p>
             <p><a class="btn btn-secondary" id="sympt5" href="#">Select symptom </a></p>
-          </div><!-- /.col-lg-4 -->
+          </div>
           <div class="col-lg-4">
             <img class="bd-placeholder-img rounded-circle" src="./back pain.png" width="140" height="140" />
             <h2 class="fw-normal">Back pain</h2>
             <p id="symptomText6">Intense to mild back pain in the spine or lower pelvical region that may be accompanied by fatigue or soreness</p>
             <p><a class="btn btn-secondary" id="sympt6" href="#">Select symptom </a></p>
-          </div><!-- /.col-lg-4 -->
-        </div><!-- /.row -->
+          </div>
+        </div>
         <div class="container marketing"> id="symptomText"
           <div class="row">
             <div class="col-lg-4">
@@ -131,23 +125,295 @@
               <h2 class="fw-normal">Knee pain</h2>
               <p id="symptomText7">A throbbing stinging pain in the knee when moving it or walking.</p>
               <p><a class="btn btn-secondary" id="sympt7" href="#">Select symptom</a></p>
-            </div><!-- /.col-lg-4 -->
+            </div>
             <div class="col-lg-4">
               <img class="bd-placeholder-img rounded-circle" src="./bruise.png" width="140" height="140" />
               <h2 class="fw-normal">Bruise/Injury</h2>
               <p id="symptomText8">A physical bruise or injury with or without blood and swelling.</p>
               <p><a class="btn btn-secondary" id="sympt8" href="#">Select symptom </a></p>
-            </div><!-- /.col-lg-4 -->
+            </div>
             <div class="col-lg-4">
               <img class="bd-placeholder-img rounded-circle" src="./dental.png" width="140" height="140" />
               <h2 class="fw-normal">Tooth or dental Pain</h2>
               <p id="symptomText9">Tooth pain or ache and/or pain in the gums</p>
               <p><a class="btn btn-secondary" id="sympt9" href="#">Select symptom </a></p>
-            </div><!-- /.col-lg-4 -->
-          </div><!-- /.row -->
+            </div>
+          </div>
   
   </main>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="./symptom.js"></script>
 </body>
-</html> 
+</html>  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Symptom Describer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* body {
+      background: radial-gradient(ellipse at top left, #0f2027, #203a43, #2c5364);
+      color: #f1f1f1;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    } */
+    body {
+      overflow-x : hidden;
+      overflow-y : auto;
+      background-color: #0c0f1d;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      position: relative;
+      height: 100vh;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.6;
+      animation: float 10s infinite ease-in-out;
+      mix-blend-mode: screen;
+    }
+
+    .blob:nth-child(1) {
+      width: 400px;
+      height: 400px;
+      background: #e4c165;
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+
+    .blob:nth-child(2) {
+      width: 350px;
+      height: 350px;
+      background: #ffd26f;
+      top: 40%;
+      left: 70%;
+      animation-delay: 5s;
+    }
+
+    .blob:nth-child(3) {
+      width: 450px;
+      height: 450px;
+      background: #ffe7a0;
+      top: 70%;
+      left: 30%;
+      animation-delay: 10s;
+    }
+    .navbar {
+      background-color: #000000cc !important;
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #00ffc8;
+    }
+
+    #voiceTextarea {
+      width: 100%;
+      height: 150px;
+      resize: none;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      background-color: #0f0f0f;
+      color: #00ffc8;
+      box-shadow: 0 0 15px rgba(0, 255, 200, 0.5);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 15px rgba(0, 255, 200, 0.4); }
+      50% { box-shadow: 0 0 25px rgba(0, 255, 200, 0.9); }
+      100% { box-shadow: 0 0 15px rgba(0, 255, 200, 0.4); }
+    }
+
+    .btn-primary, .btn-secondary {
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-weight: bold;
+      border: none;
+      color: #000;
+      background: linear-gradient(135deg, #00ffc8, #007cf0);
+      box-shadow: 0 0 15px rgba(0, 255, 200, 0.6);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .btn-primary:hover, .btn-secondary:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0, 255, 200, 0.9);
+    }
+
+    .card-symptom {
+  background: rgba(12, 14, 30, 0.92); /* near opaque with slight transparency */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(255, 215, 100, 0.25), 0 0 10px rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  color: #f8f8f8;
+  padding: 20px;
+  transition: transform 0.3s ease;
+}
+
+.card-symptom:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 30px rgba(255, 215, 100, 0.4), 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+
+    .card-symptom img {
+      border-radius: 50%;
+      border: 2px solid #00ffc8;
+      margin-bottom: 10px;
+    }
+
+    .display-5 {
+      text-shadow: 0 0 10px #00ffc8;
+      color: #ffffff;
+    }
+
+    .container-fluid.py-5 {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0, 255, 200, 0.2);
+    }
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-100px) scale(1.05);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand text-neon" href="#">🩺Get Well Soon</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample05">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExample05">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="/patient_dashboard">Home</a></li>
+          <li class="nav-item"><a class="nav-link disabled">Describe</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">More</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Track</a></li>
+              <li><a class="dropdown-item" href="#">Consult</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="blob"></div>
+  <div class="blob"></div>
+  <div class="blob"></div>
+  <main class="text-center">
+    <div class="p-5 mb-4">
+      <h1 class="display-5 fw-bold">Describe Your Symptoms</h1>
+      <div class="container mt-4">
+        <textarea id="voiceTextarea" placeholder="Start speaking or typing..."></textarea>
+        <div class="d-flex justify-content-center gap-3 mt-3">
+          <button id="micButton" class="btn btn-primary">🎙 Voice type</button>
+          <button id="submitButton" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1 class="display-5 mb-5">Common Symptoms</h1>
+      <div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card-symptom">
+      <img src="./headache.png" width="120" height="120" />
+      <h4 class="mt-3">Headache</h4>
+      <p id="symptomText1">A throbbing or blinding pain with or without visual disturbance.</p>
+      <a href="#" class="btn btn-secondary" id="sympt1">Select Symptom</a>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card-symptom">
+      <img src="./chestpain.png" width="120" height="120" />
+      <h4 class="mt-3">Chest Pain</h4>
+      <p id="symptomText2">Stabbing or spreading pain with or without movement.</p>
+      <a href="#" class="btn btn-secondary" id="sympt2">Select Symptom</a>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card-symptom">
+      <img src="./cough.png" width="120" height="120" />
+      <h4 class="mt-3">Cough</h4>
+      <p id="symptomText3">Dry or wet cough with burning throat or chest pain.</p>
+      <a href="#" class="btn btn-secondary" id="sympt3">Select Symptom</a>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card-symptom">
+      <img src="./stomachpain.png" width="120" height="120" />
+      <h4 class="mt-3">Stomach Pain</h4>
+      <p id="symptomText4">Consistent or throbbing pain often with nausea or vomiting.</p>
+      <a href="#" class="btn btn-secondary" id="sympt4">Select Symptom</a>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card-symptom">
+      <img src="./muscle pain.png" width="120" height="120" />
+      <h4 class="mt-3">Muscular Pain</h4>
+      <p id="symptomText5">Soreness or discomfort in muscles, especially during movement.</p>
+      <a href="#" class="btn btn-secondary" id="sympt5">Select Symptom</a>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card-symptom">
+      <img src="./back pain.png" width="120" height="120" />
+      <h4 class="mt-3">Back Pain</h4>
+      <p id="symptomText6">Lower or upper back discomfort with fatigue or limited mobility.</p>
+      <a href="#" class="btn btn-secondary" id="sympt6">Select Symptom</a>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card-symptom">
+      <img src="./knee pain.png" width="120" height="120" />
+      <h4 class="mt-3">Knee Pain</h4>
+      <p id="symptomText7">Sharp or dull knee pain while walking or bending the joint.</p>
+      <a href="#" class="btn btn-secondary" id="sympt7">Select Symptom</a>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card-symptom">
+      <img src="./bruise.png" width="120" height="120" />
+      <h4 class="mt-3">Bruise / Injury</h4>
+      <p id="symptomText8">Visible swelling or discoloration from trauma, with or without bleeding.</p>
+      <a href="#" class="btn btn-secondary" id="sympt8">Select Symptom</a>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card-symptom">
+      <img src="./dental.png" width="120" height="120" />
+      <h4 class="mt-3">Dental Pain</h4>
+      <p id="symptomText9">Ache or throbbing in teeth or gums, often worsened by pressure or cold.</p>
+      <a href="#" class="btn btn-secondary" id="sympt9">Select Symptom</a>
+    </div>
+  </div>
+</div>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./symptom.js"></script>
+</body>
+</html>

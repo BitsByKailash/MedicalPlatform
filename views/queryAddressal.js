@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const submitButton = document.getElementsByClassName("btn btn-success");
+    const submitButton = document.getElementsByClassName("btn submitDoctorQueryButton");
     const doctorSaidTextarea = document.getElementsByClassName("form-control DoctorSaid");
     console.log(submitButton, doctorSaidTextarea);
     for(let i=0; i<submitButton.length; i++)
@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         button.addEventListener("click", async () => {
         const doctorResponse = doctorSaidTextarea[i].value;
-        const queryID = i+9;
+        const queryID = i+3;
         console.log(doctorResponse, button);
         console.log(queryID);
         try {
