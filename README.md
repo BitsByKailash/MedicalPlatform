@@ -83,7 +83,7 @@ Pull requests are welcome! Feel free to fork and submit improvements or bug fixe
 📄 License
 MIT License
 
-Made with ❤️ for improving doctor-patient interactions using AI.
+Made with ❤️ by Kailash
 
 
 
